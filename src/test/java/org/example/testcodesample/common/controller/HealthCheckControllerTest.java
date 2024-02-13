@@ -1,4 +1,4 @@
-package org.example.testcodesample.controller;
+package org.example.testcodesample.common.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,10 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 class HealthCheckControllerTest {
-    
+
     @Autowired
     private MockMvc mockMvc;
-    
+
     @Test
     void 헬스_체크_응답이_200으로_내려온다() throws Exception {
         mockMvc.perform(get("/health_check.html"))

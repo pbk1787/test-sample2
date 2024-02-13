@@ -1,11 +1,10 @@
-package org.example.testcodesample.service;
+package org.example.testcodesample.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.example.testcodesample.post.domain.PostCreate;
 import org.example.testcodesample.post.domain.PostUpdate;
 import org.example.testcodesample.post.infrastructure.PostEntity;
-import org.example.testcodesample.post.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

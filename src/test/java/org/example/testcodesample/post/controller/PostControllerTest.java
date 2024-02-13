@@ -1,4 +1,4 @@
-package org.example.testcodesample.controller;
+package org.example.testcodesample.post.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
