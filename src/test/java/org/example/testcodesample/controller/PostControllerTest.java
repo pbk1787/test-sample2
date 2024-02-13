@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.testcodesample.model.dto.PostUpdateDto;
+import org.example.testcodesample.post.domain.PostUpdate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -62,7 +62,7 @@ class PostControllerTest {
     @Test
     void 사용자는_게시물을_수정할_수_있다() throws Exception {
         //given
-        PostUpdateDto postUpdateDto = PostUpdateDto.builder()
+        PostUpdate postUpdate = PostUpdate.builder()
             .content("안녕_테스트")
             .build();
 
@@ -72,7 +72,7 @@ class PostControllerTest {
                 put("/api/posts/1")
                     .header("EMAIL", "test@test.com")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(postUpdateDto))
+                    .content(objectMapper.writeValueAsString(postUpdate))
             )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").isNumber())

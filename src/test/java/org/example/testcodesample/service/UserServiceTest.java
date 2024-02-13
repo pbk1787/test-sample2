@@ -1,14 +1,16 @@
 package org.example.testcodesample.service;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
-import org.example.testcodesample.exception.CertificationCodeNotMatchedException;
-import org.example.testcodesample.exception.ResourceNotFoundException;
-import org.example.testcodesample.model.UserStatus;
-import org.example.testcodesample.model.dto.UserCreateDto;
-import org.example.testcodesample.model.dto.UserUpdateDto;
-import org.example.testcodesample.repository.UserEntity;
+import org.example.testcodesample.common.domain.exception.CertificationCodeNotMatchedException;
+import org.example.testcodesample.common.domain.exception.ResourceNotFoundException;
+import org.example.testcodesample.user.domain.UserCreate;
+import org.example.testcodesample.user.domain.UserStatus;
+import org.example.testcodesample.user.domain.UserUpdate;
+import org.example.testcodesample.user.infrastructure.UserEntity;
+import org.example.testcodesample.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ class UserServiceTest {
 
         //when
         //then
-        assertThatThrownBy(()-> {
+        assertThatThrownBy(() -> {
             UserEntity result = userService.getByEmail(email);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
@@ -75,7 +77,7 @@ class UserServiceTest {
 
         //when
         //then
-        assertThatThrownBy(()-> {
+        assertThatThrownBy(() -> {
             UserEntity result = userService.getById(2);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
@@ -83,7 +85,7 @@ class UserServiceTest {
     @Test
     void UserCreateDto를_이용하여_유저를_생성할_수_있다() {
         //given
-        UserCreateDto userCreateDto = UserCreateDto.builder()
+        UserCreate userCreate = UserCreate.builder()
             .email("test3@test.com")
             .address("Seoul")
             .nickname("kangnam")
@@ -92,7 +94,7 @@ class UserServiceTest {
         BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         //when
-        UserEntity result = userService.create(userCreateDto);
+        UserEntity result = userService.create(userCreate);
 
         //then
         assertThat(result.getId()).isNotNull();
@@ -103,7 +105,7 @@ class UserServiceTest {
     @Test
     void UserUpdateDto를_이용하여_유저를_생성할_수_있다() {
         //given
-        UserUpdateDto updateDto = UserUpdateDto.builder()
+        UserUpdate updateDto = UserUpdate.builder()
             .address("Incheon")
             .nickname("sea")
             .build();
@@ -146,7 +148,7 @@ class UserServiceTest {
         //given
         //when
         //then
-        assertThatThrownBy(()->{
+        assertThatThrownBy(() -> {
             userService.verifyEmail(2, "bbbbb-bbbb-2222");
         }).isInstanceOf(CertificationCodeNotMatchedException.class);
     }

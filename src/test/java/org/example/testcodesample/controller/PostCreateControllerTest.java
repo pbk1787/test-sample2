@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.testcodesample.model.dto.PostCreateDto;
+import org.example.testcodesample.post.domain.PostCreate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -35,7 +35,7 @@ class PostCreateControllerTest {
     @Test
     void 사용자는_게시물을_작성할_수_있다() throws Exception {
         //given
-        PostCreateDto postCreateDto = PostCreateDto.builder()
+        PostCreate postCreate = PostCreate.builder()
             .writerId(1)
             .content("hello~")
             .build();
@@ -46,7 +46,7 @@ class PostCreateControllerTest {
                 post("/api/posts")
                     .header("EMAIL", "test@test.com")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(postCreateDto)))
+                    .content(objectMapper.writeValueAsString(postCreate)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.content").value("hello~"))

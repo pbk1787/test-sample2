@@ -1,14 +1,12 @@
 package org.example.testcodesample.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.testcodesample.model.dto.UserCreateDto;
+import org.example.testcodesample.user.domain.UserCreate;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ class UserCreateControllerTest {
     @Test
     void 사용자는_회원가입을_할_수있고_회원가입된_사용자는_PENDING_상태이다() throws Exception {
         //given
-        UserCreateDto userCreateDto = UserCreateDto.builder()
+        UserCreate userCreate = UserCreate.builder()
             .email("test@test.com")
             .nickname("test")
             .address("gangnam")
@@ -54,10 +52,10 @@ class UserCreateControllerTest {
         //when
         //then
         mockMvc.perform(
-            post("/api/users")
-                .header("EMAIL","test@test.com")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userCreateDto)))
+                post("/api/users")
+                    .header("EMAIL", "test@test.com")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(userCreate)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.id").value(1))
             .andExpect(jsonPath("$.email").value("test@test.com"))

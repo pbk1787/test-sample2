@@ -4,8 +4,9 @@ package org.example.testcodesample.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import org.example.testcodesample.model.UserStatus;
-import org.junit.jupiter.api.BeforeAll;
+import org.example.testcodesample.user.domain.UserStatus;
+import org.example.testcodesample.user.infrastructure.UserEntity;
+import org.example.testcodesample.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -80,7 +81,6 @@ class UserRepositoryTest {
         assertThat(byIdAndStatus.isEmpty()).isTrue();
 
     }
-
 
 
 }
