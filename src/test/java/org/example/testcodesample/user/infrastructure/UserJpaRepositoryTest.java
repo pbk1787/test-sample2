@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 import org.example.testcodesample.user.domain.UserStatus;
-import org.example.testcodesample.user.infrastructure.UserEntity;
-import org.example.testcodesample.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,10 +14,10 @@ import org.springframework.test.context.jdbc.Sql;
 @DataJpaTest
 @TestPropertySource("classpath:test-application.properties")
 @Sql("/sql/user-repository-test-data.sql")
-class UserRepositoryTest {
+class UserJpaRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
    /* @Test
     void UserRepository_가_제대로_연결되었다() {
@@ -42,7 +40,7 @@ class UserRepositoryTest {
     void findByIdAndStatus_로_유저_데이터를_찾아올_수_있다() {
         //given
         //when
-        Optional<UserEntity> byIdAndStatus = userRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
+        Optional<UserEntity> byIdAndStatus = userJpaRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
 
         //then
         assertThat(byIdAndStatus.isPresent()).isTrue();
@@ -53,7 +51,7 @@ class UserRepositoryTest {
     void findByIdAndStatus_는_데이터가_없으면_Optional_empty_를_내려준다() {
         //given
         //when
-        Optional<UserEntity> byIdAndStatus = userRepository.findByIdAndStatus(1, UserStatus.INACTIVE);
+        Optional<UserEntity> byIdAndStatus = userJpaRepository.findByIdAndStatus(1, UserStatus.INACTIVE);
 
         //then
         assertThat(byIdAndStatus.isEmpty()).isTrue();
@@ -64,7 +62,7 @@ class UserRepositoryTest {
     void findByEmailAndStatus_로_유저_데이터를_찾아올_수_있다() {
         //given
         //when
-        Optional<UserEntity> byIdAndStatus = userRepository.findByEmailAndStatus("test@test.com", UserStatus.ACTIVE);
+        Optional<UserEntity> byIdAndStatus = userJpaRepository.findByEmailAndStatus("test@test.com", UserStatus.ACTIVE);
 
         //then
         assertThat(byIdAndStatus.isPresent()).isTrue();
@@ -75,7 +73,7 @@ class UserRepositoryTest {
     void findByEmailAndStatus_는_데이터가_없으면_Optional_empty_를_내려준다() {
         //given
         //when
-        Optional<UserEntity> byIdAndStatus = userRepository.findByEmailAndStatus("test@test.com", UserStatus.INACTIVE);
+        Optional<UserEntity> byIdAndStatus = userJpaRepository.findByEmailAndStatus("test@test.com", UserStatus.INACTIVE);
 
         //then
         assertThat(byIdAndStatus.isEmpty()).isTrue();

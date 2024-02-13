@@ -10,7 +10,7 @@ import org.example.testcodesample.user.domain.UserCreate;
 import org.example.testcodesample.user.domain.UserStatus;
 import org.example.testcodesample.user.domain.UserUpdate;
 import org.example.testcodesample.user.infrastructure.UserEntity;
-import org.example.testcodesample.user.infrastructure.UserRepository;
+import org.example.testcodesample.user.service.port.UserRepository;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;

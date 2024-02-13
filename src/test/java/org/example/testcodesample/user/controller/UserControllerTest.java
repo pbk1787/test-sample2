@@ -11,7 +11,7 @@ import org.assertj.core.api.Assertions;
 import org.example.testcodesample.user.domain.UserStatus;
 import org.example.testcodesample.user.domain.UserUpdate;
 import org.example.testcodesample.user.infrastructure.UserEntity;
-import org.example.testcodesample.user.infrastructure.UserRepository;
+import org.example.testcodesample.user.infrastructure.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -36,7 +36,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -76,7 +76,7 @@ class UserControllerTest {
                     .queryParam("certificationCode", "bbbbb-bbbb-bbbb"))
             .andExpect(status().isFound());
 
-        UserEntity userEntity = userRepository.findById(2L).get();
+        UserEntity userEntity = userJpaRepository.findById(2L).get();
         Assertions.assertThat(userEntity.getStatus()).isEqualTo(UserStatus.ACTIVE);
     }
 

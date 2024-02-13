@@ -6,7 +6,7 @@ import org.example.testcodesample.common.domain.exception.ResourceNotFoundExcept
 import org.example.testcodesample.post.domain.PostCreate;
 import org.example.testcodesample.post.domain.PostUpdate;
 import org.example.testcodesample.post.infrastructure.PostEntity;
-import org.example.testcodesample.post.infrastructure.PostRepository;
+import org.example.testcodesample.post.service.port.PostRepository;
 import org.example.testcodesample.user.infrastructure.UserEntity;
 import org.example.testcodesample.user.service.UserService;
 import org.springframework.stereotype.Service;
