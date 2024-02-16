@@ -2,9 +2,9 @@ package org.example.testcodesample.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.example.testcodesample.post.domain.Post;
 import org.example.testcodesample.post.domain.PostCreate;
 import org.example.testcodesample.post.domain.PostUpdate;
-import org.example.testcodesample.post.infrastructure.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +16,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @SpringBootTest
 @TestPropertySource("classpath:test-application.properties")
 @SqlGroup({
-    @Sql(value = "/sql/user-service-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = "/sql/post-service-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
 })
 class PostServiceTest {
 
@@ -28,7 +28,7 @@ class PostServiceTest {
     void getPostById는_존재하는_게시물을_내려준다() {
         //given
         //when
-        PostEntity result = postService.getPostById(1);
+        Post result = postService.getPostById(1);
 
         //then
         assertThat(result.getContent()).isEqualTo("helloworld");
@@ -36,7 +36,7 @@ class PostServiceTest {
     }
 
     @Test
-    void userCreateDto_를_이용하여_게시물을_생성할_수_있다() {
+    void PostCreateDto_를_이용하여_게시물을_생성할_수_있다() {
         //given
         PostCreate postCreate = PostCreate.builder()
             .writerId(1)
@@ -44,7 +44,7 @@ class PostServiceTest {
             .build();
 
         //when
-        PostEntity result = postService.create(postCreate);
+        Post result = postService.create(postCreate);
 
         //then
         assertThat(result.getId()).isNotNull();
@@ -61,7 +61,7 @@ class PostServiceTest {
             .build();
 
         //when
-        PostEntity result = postService.update(1, postUpdate);
+        Post result = postService.update(1, postUpdate);
 
         //then
         assertThat(result.getContent()).isEqualTo("tteesstt");
