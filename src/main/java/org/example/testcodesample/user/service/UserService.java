@@ -2,6 +2,8 @@ package org.example.testcodesample.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.testcodesample.common.domain.exception.ResourceNotFoundException;
+import org.example.testcodesample.common.service.port.ClockHolder;
+import org.example.testcodesample.common.service.port.UuidHolder;
 import org.example.testcodesample.user.domain.User;
 import org.example.testcodesample.user.domain.UserCreate;
 import org.example.testcodesample.user.domain.UserStatus;
@@ -16,6 +18,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
+    private final UuidHolder uuidHolder;
+    private final ClockHolder clockHolder;
 
     public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
@@ -31,7 +35,7 @@ public class UserService {
     //UserService 자체가 User에 대한 책임을 지고 있기 때문에 create만 적어줘도 됨
     @Transactional
     public User create(UserCreate userCreate) {
-        User user = User.from(userCreate);
+        User user = User.from(userCreate, uuidHolder);
         user = userRepository.save(user);
         certificationService.send(userCreate.getEmail(), user.getId(), user.getCertificationCode());
         return user;
@@ -48,7 +52,7 @@ public class UserService {
     @Transactional
     public void login(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        user = user.login();
+        user = user.login(clockHolder);
         //도메인과 영속성 객체를 분리함으로써 JPA 의존성이 끊어지게 되어 변경된 Entity를 감지할 수 없음
         userRepository.save(user);
     }
