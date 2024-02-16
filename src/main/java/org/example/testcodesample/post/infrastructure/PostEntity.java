@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.testcodesample.post.domain.Post;
 import org.example.testcodesample.user.infrastructure.UserEntity;
 
 @Getter
@@ -35,4 +36,23 @@ public class PostEntity {
     @JoinColumn(name = "user_id")
     private UserEntity writer;
 
+    public static PostEntity fromModel(Post post) {
+        PostEntity postEntity = new PostEntity();
+        postEntity.setId(post.getId());
+        postEntity.setContent(post.getContent());
+        postEntity.setCreatedAt(post.getCreatedAt());
+        postEntity.setModifiedAt(post.getModifiedAt());
+        postEntity.setWriter(UserEntity.fromModel(post.getWriter()));
+        return postEntity;
+    }
+
+    public Post toModel() {
+        return Post.builder()
+            .id(id)
+            .content(content)
+            .createdAt(createdAt)
+            .modifiedAt(modifiedAt)
+            .writer(writer.toModel())
+            .build();
+    }
 }

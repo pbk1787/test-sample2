@@ -1,15 +1,11 @@
 package org.example.testcodesample.user.service;
 
-import java.time.Clock;
-import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.example.testcodesample.common.domain.exception.CertificationCodeNotMatchedException;
 import org.example.testcodesample.common.domain.exception.ResourceNotFoundException;
+import org.example.testcodesample.user.domain.User;
 import org.example.testcodesample.user.domain.UserCreate;
 import org.example.testcodesample.user.domain.UserStatus;
 import org.example.testcodesample.user.domain.UserUpdate;
-import org.example.testcodesample.user.infrastructure.UserEntity;
 import org.example.testcodesample.user.service.port.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,60 +17,47 @@ public class UserService {
     private final UserRepository userRepository;
     private final CertificationService certificationService;
 
-    //find는 optional을 반환한다는 의미
-    public Optional<UserEntity> findById(long id) {
-        return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE);
-    }
-
-    public UserEntity getByEmail(String email) {
+    public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
             .orElseThrow(() -> new ResourceNotFoundException("Users", email));
     }
 
     //get은 데이터가 없으면 에러를 던진다는 의미가 내포되어 있다.
-    public UserEntity getById(long id) {
+    public User getById(long id) {
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
             .orElseThrow(() -> new ResourceNotFoundException("Users", id));
     }
 
     //UserService 자체가 User에 대한 책임을 지고 있기 때문에 create만 적어줘도 됨
     @Transactional
-    public UserEntity create(UserCreate userCreate) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(userCreate.getEmail());
-        userEntity.setNickname(userCreate.getNickname());
-        userEntity.setAddress(userCreate.getAddress());
-        userEntity.setStatus(UserStatus.PENDING);
-        userEntity.setCertificationCode(UUID.randomUUID().toString());
-        userEntity = userRepository.save(userEntity);
-
-        certificationService.send(userCreate.getEmail(), userEntity.getId(), userEntity.getCertificationCode());
-        return userEntity;
+    public User create(UserCreate userCreate) {
+        User user = User.from(userCreate);
+        user = userRepository.save(user);
+        certificationService.send(userCreate.getEmail(), user.getId(), user.getCertificationCode());
+        return user;
     }
 
     //create와 마찬가지고 UserService 자체가 User에 대한 책임을 가지고 있음 User 생략
     @Transactional
-    public UserEntity update(long id, UserUpdate userUpdate) {
-        UserEntity userEntity = getById(id);
-        userEntity.setNickname(userUpdate.getNickname());
-        userEntity.setAddress(userUpdate.getAddress());
-        userEntity = userRepository.save(userEntity);
-        return userEntity;
+    public User update(long id, UserUpdate userUpdate) {
+        User user = getById(id);
+        user = user.update(userUpdate);
+        return userRepository.save(user);
     }
 
     @Transactional
     public void login(long id) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        userEntity.setLastLoginAt(Clock.systemUTC().millis());
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
+        user = user.login();
+        //도메인과 영속성 객체를 분리함으로써 JPA 의존성이 끊어지게 되어 변경된 Entity를 감지할 수 없음
+        userRepository.save(user);
     }
 
     @Transactional
     public void verifyEmail(long id, String certificationCode) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        if (!certificationCode.equals(userEntity.getCertificationCode())) {
-            throw new CertificationCodeNotMatchedException();
-        }
-        userEntity.setStatus(UserStatus.ACTIVE);
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
+        user = user.certificate(certificationCode);
+        userRepository.save(user);
     }
 
 }
