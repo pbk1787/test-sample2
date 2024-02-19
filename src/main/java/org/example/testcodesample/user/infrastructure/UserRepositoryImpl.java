@@ -2,6 +2,7 @@ package org.example.testcodesample.user.infrastructure;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.example.testcodesample.common.domain.exception.ResourceNotFoundException;
 import org.example.testcodesample.user.domain.User;
 import org.example.testcodesample.user.domain.UserStatus;
 import org.example.testcodesample.user.service.port.UserRepository;
@@ -19,7 +20,13 @@ public class UserRepositoryImpl implements UserRepository {
         // 도메인은 영속성(인프라) 레이어의 정보를 모르는 것이 좋다
         return userJpaRepository.save(UserEntity.fromModel(user)).toModel();
     }
-    
+
+    @Override
+    public User getById(long id) {
+        return findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Users", id));
+    }
+
     @Override
     public Optional<User> findById(long id) {
         return userJpaRepository.findById(id).map(UserEntity::toModel);
