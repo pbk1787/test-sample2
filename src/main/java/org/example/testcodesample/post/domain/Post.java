@@ -1,8 +1,8 @@
 package org.example.testcodesample.post.domain;
 
-import java.time.Clock;
 import lombok.Builder;
 import lombok.Getter;
+import org.example.testcodesample.common.service.port.ClockHolder;
 import org.example.testcodesample.user.domain.User;
 
 @Getter
@@ -23,19 +23,19 @@ public class Post {
         this.writer = writer;
     }
 
-    public static Post from(User writer, PostCreate postCreate) {
+    public static Post from(User writer, PostCreate postCreate, ClockHolder clockHolder) {
         return Post.builder()
             .content(postCreate.getContent())
-            .createdAt(Clock.systemUTC().millis())
+            .createdAt(clockHolder.millis())
             .writer(writer)
             .build();
     }
 
-    public Post update(PostUpdate postUpdate) {
+    public Post update(PostUpdate postUpdate, ClockHolder clockHolder) {
         return Post.builder()
             .content(postUpdate.getContent())
             .createdAt(createdAt)
-            .modifiedAt(Clock.systemUTC().millis())
+            .modifiedAt(clockHolder.millis())
             .writer(writer)
             .build();
     }
