@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.example.testcodesample.post.domain.Post;
 import org.example.testcodesample.post.domain.PostCreate;
 import org.example.testcodesample.post.domain.PostUpdate;
-import org.example.testcodesample.post.service.PostService;
+import org.example.testcodesample.post.service.PostServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 class PostServiceTest {
 
     @Autowired
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @Test
     void getPostById는_존재하는_게시물을_내려준다() {

@@ -15,14 +15,14 @@ import org.junit.jupiter.api.Test;
 
 class PostServiceTest {
 
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @BeforeEach
     void init() {
         FakePostRepository fakePostRepository = new FakePostRepository();
         FakeUserRepository fakeUserRepository = new FakeUserRepository();
 
-        this.postService = new PostService(
+        this.postService = new PostServiceImpl(
             fakePostRepository,
             fakeUserRepository,
             new TestClockHolder(16793067398L)

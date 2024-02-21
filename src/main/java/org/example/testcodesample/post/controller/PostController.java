@@ -2,9 +2,9 @@ package org.example.testcodesample.post.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.example.testcodesample.post.controller.port.PostService;
 import org.example.testcodesample.post.controller.response.PostResponse;
 import org.example.testcodesample.post.domain.PostUpdate;
-import org.example.testcodesample.post.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
