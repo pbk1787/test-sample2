@@ -21,7 +21,7 @@ class UserCreateControllerTest {
 
         //when
         ResponseEntity<UserResponse> result = testContainer.userCreateController
-            .createUser(UserCreate.builder()
+            .create(UserCreate.builder()
                 .email("test@test.com")
                 .nickname("test")
                 .address("gangnam")

@@ -18,7 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         //유저 도메인에서 영속성 도메인으로 변환하는 것보다 영속성 도메인에서 유저 도메인을 받아 변환하는 것이 더 좋음
         // 도메인은 영속성(인프라) 레이어의 정보를 모르는 것이 좋다
-        return userJpaRepository.save(UserEntity.fromModel(user)).toModel();
+        return userJpaRepository.save(UserEntity.from(user)).toModel();
     }
 
     @Override
