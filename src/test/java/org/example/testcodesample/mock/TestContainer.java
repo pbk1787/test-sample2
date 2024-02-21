@@ -10,10 +10,6 @@ import org.example.testcodesample.post.service.PostServiceImpl;
 import org.example.testcodesample.post.service.port.PostRepository;
 import org.example.testcodesample.user.controller.UserController;
 import org.example.testcodesample.user.controller.UserCreateController;
-import org.example.testcodesample.user.controller.port.AuthenticationService;
-import org.example.testcodesample.user.controller.port.UserCreateService;
-import org.example.testcodesample.user.controller.port.UserReadService;
-import org.example.testcodesample.user.controller.port.UserUpdateService;
 import org.example.testcodesample.user.service.CertificationService;
 import org.example.testcodesample.user.service.UserServiceImpl;
 import org.example.testcodesample.user.service.port.MailSender;
@@ -24,10 +20,6 @@ public class TestContainer {
     public final MailSender mailSender;
     public final UserRepository userRepository;
     public final PostRepository postRepository;
-    public final UserReadService userReadService;
-    public final UserCreateService userCreateService;
-    public final UserUpdateService userUpdateService;
-    public final AuthenticationService authenticationService;
     public final PostService postService;
     public final CertificationService certificationService;
     public final UserController userController;
@@ -51,18 +43,10 @@ public class TestContainer {
             new CertificationService(this.mailSender),
             uuidHolder,
             clockHolder);
-
-        this.userReadService = userService;
-        this.userCreateService = userService;
-        this.userUpdateService = userService;
-        this.authenticationService = userService;
         this.userController = UserController.builder()
-            .userReadService(userReadService)
-            .userCreateService(userCreateService)
-            .userUpdateService(userUpdateService)
-            .authenticationService(authenticationService)
+            .userService(userService)
             .build();
-        this.userCreateController = new UserCreateController(userCreateService);
+        this.userCreateController = new UserCreateController(userService);
         this.postController = new PostController(postService);
         this.postCreateController = new PostCreateController(postService);
 

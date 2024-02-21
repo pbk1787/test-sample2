@@ -53,11 +53,9 @@ class UserControllerTest {
             .build();
         //when
         //then
-        assertThatThrownBy(() -> UserController.builder()
-            .userReadService(testContainer.userReadService)
-            .build()
-            .getUserById(1)
-        ).isInstanceOf(ResourceNotFoundException.class);
+        assertThatThrownBy(() -> testContainer.userController
+            .getUserById(1))
+            .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

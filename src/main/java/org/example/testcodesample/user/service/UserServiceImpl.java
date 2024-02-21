@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.testcodesample.common.domain.exception.ResourceNotFoundException;
 import org.example.testcodesample.common.service.port.ClockHolder;
 import org.example.testcodesample.common.service.port.UuidHolder;
-import org.example.testcodesample.user.controller.port.AuthenticationService;
-import org.example.testcodesample.user.controller.port.UserCreateService;
-import org.example.testcodesample.user.controller.port.UserReadService;
-import org.example.testcodesample.user.controller.port.UserUpdateService;
+import org.example.testcodesample.user.controller.port.UserService;
 import org.example.testcodesample.user.domain.User;
 import org.example.testcodesample.user.domain.UserCreate;
 import org.example.testcodesample.user.domain.UserStatus;
@@ -18,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserCreateService, UserUpdateService, UserReadService, AuthenticationService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
